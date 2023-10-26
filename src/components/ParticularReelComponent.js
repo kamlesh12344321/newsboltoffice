@@ -225,10 +225,10 @@ export default function ParticularReelComponent(route) {
               paused={activeVideoIndex !== index || videoPlay}
               playInBackground={false}
               playWhenInactive={false}
-              automaticallyWaitsToMinimizeStalling = {false}
+              automaticallyWaitsToMinimizeStalling = {true}
               hideShutterView = {true}
               progressUpdateInterval={10}
-              preload="metadata" 
+              preload="auto" 
               bufferConfig={{
                 minBufferMs: 150,
                 maxBufferMs: 3000,
@@ -385,6 +385,7 @@ export default function ParticularReelComponent(route) {
     <SafeAreaView style={styles.flex}backgroundColor = {Colors("black")}>
       <View onLayout={onSetLayout} style={styles.flex}>
         <FlashList
+        
           ref={scrollViewRef}
           data={reelsData}
           extraData={extraData}
@@ -398,13 +399,15 @@ export default function ParticularReelComponent(route) {
           snapToInterval={layoutHeight}
           snapToAlignment={'start'}
           decelerationRate={'normal'}
-          scrollEventThrottle={250}
+          // scrollEventThrottle={250}
           disableIntervalMomentum={true}
-          initialNumToRender={100}
+          initialNumToRender={200}
+          estimatedItemSize={10}
           initialScrollIndex={currentReelIndex}
           maxToRenderPerBatch={100}
-          windowSize={100}
-          removeClippedSubviews={false}
+          windowSize={200}
+          preloadItem={true}
+          preloadItemSize={20}
           getItemLayout={(data, index) => ({
             length: layoutHeight,
             offset: layoutHeight * index,
