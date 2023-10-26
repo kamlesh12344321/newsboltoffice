@@ -231,10 +231,9 @@ export default function ParticularReelComponent(route) {
               preload="auto" 
               bufferConfig={{
                 minBufferMs: 150,
-                maxBufferMs: 3000,
+                maxBufferMs: 30,
                 bufferForPlaybackMs: 100,
                 bufferForPlaybackAfterRebufferMs: 100
-
               }}
               
             />
@@ -398,17 +397,17 @@ export default function ParticularReelComponent(route) {
           drawDistance={layoutHeight}
           snapToInterval={layoutHeight}
           snapToAlignment={'start'}
-          decelerationRate={'normal'}
+          decelerationRate={'fast'}
           // scrollEventThrottle={250}
           disableIntervalMomentum={true}
           initialNumToRender={200}
-          estimatedItemSize={10}
+          estimatedItemSize={100}
           initialScrollIndex={currentReelIndex}
           maxToRenderPerBatch={100}
           windowSize={200}
           preloadItem={true}
-          preloadItemSize={20}
-          getItemLayout={(data, index) => ({
+          preloadItemSize={50}
+          getItemLayout={(index) => ({
             length: layoutHeight,
             offset: layoutHeight * index,
             index,
