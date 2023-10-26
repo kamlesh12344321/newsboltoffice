@@ -1,3 +1,7 @@
 {
-  "cSpell.words": ["SENDEMAILOTP"]
+  "cSpell.words": [
+    "SENDEMAILOTP"
+  ],
+  "java.compile.nullAnalysis.mode": "automatic",
+  "java.configuration.updateBuildConfiguration": "interactive"
 }

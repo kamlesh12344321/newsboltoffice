@@ -6590,6 +6590,11 @@ react-native-vector-icons@^9.2.0:
     prop-types "^15.7.2"
     yargs "^16.1.1"
 
+react-native-video-cache@^2.7.4:
+  version "2.7.4"
+  resolved "https://registry.npmjs.org/react-native-video-cache/-/react-native-video-cache-2.7.4.tgz"
+  integrity sha512-0bSJowf9jZaPX+OohjNH6DFPf0/UDgX1foWJAS5Uyv7tuByj9sD9UNbVreEGFjNNya/xVhZffmDaLWMTrx7VBg==
+
 react-native-video@^5.2.1:
   version "5.2.1"
   resolved "https://registry.npmjs.org/react-native-video/-/react-native-video-5.2.1.tgz"

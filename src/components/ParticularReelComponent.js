@@ -9,12 +9,15 @@ import {
   SafeAreaView,
   Linking,
   FlatList,
+  ProgressBarAndroidComponent,
 } from 'react-native';
 import React, {useEffect, useRef, useState, useCallback} from 'react';
 import Video from 'react-native-video';
 import {useSelector} from 'react-redux';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
+import convertToProxyURL from 'react-native-video-cache';
+
 
 // Local import
 import {commonColor, styles} from '../themes';
@@ -28,6 +31,7 @@ import ZText from './common/ZText';
 import {StackNav} from '../navigation/NavigationKeys';
 import Comment from './models/Comment';
 import {getRequestApi} from '../api/axios';
+
 import {
   CommentIcon,
   FlagIcon,
@@ -49,6 +53,8 @@ import {
 import ZLoader from '../components/common/ZLoader';
 import {showPopupWithOk} from '../utils/helpers';
 import useStateWithCallbackLazy from '../hooks/useStateWithCallbackLazy';
+import { Animated } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 
 export default function ParticularReelComponent(route) {
   const reelRouteData = route.route.params?.reelData;
@@ -204,7 +210,8 @@ export default function ParticularReelComponent(route) {
           {isFocused && (
             <Video
               key={activeVideoIndex === index ? 'active' : 'inactive'}
-              source={{uri: item?.video_url}}
+              source={{uri: convertToProxyURL(item?.video_url)}}
+              ref={playerRef}
               style={[
                 localStyles.imageContainer,
                 {backgroundColor: colors.darkBg},
@@ -218,6 +225,18 @@ export default function ParticularReelComponent(route) {
               paused={activeVideoIndex !== index || videoPlay}
               playInBackground={false}
               playWhenInactive={false}
+              automaticallyWaitsToMinimizeStalling = {false}
+              hideShutterView = {true}
+              progressUpdateInterval={10}
+              preload="metadata" 
+              bufferConfig={{
+                minBufferMs: 150,
+                maxBufferMs: 3000,
+                bufferForPlaybackMs: 100,
+                bufferForPlaybackAfterRebufferMs: 100
+
+              }}
+              
             />
           )}
 
@@ -328,7 +347,7 @@ export default function ParticularReelComponent(route) {
     );
   };
 
-  const viewConfig = useRef({viewAreaCoveragePercentThreshold: 50}).current;
+  const viewConfig = useRef({viewAreaCoveragePercentThreshold: 70}).current;
   const keyExtractor = useCallback((item, index) => {
     return `item-${item?.id}`;
   }, []);
@@ -363,9 +382,9 @@ export default function ParticularReelComponent(route) {
   const onSetLayout = e => setLayoutHeight(e.nativeEvent.layout.height);
 
   return (
-    <SafeAreaView style={styles.flex}>
+    <SafeAreaView style={styles.flex}backgroundColor = {Colors("black")}>
       <View onLayout={onSetLayout} style={styles.flex}>
-        <FlatList
+        <FlashList
           ref={scrollViewRef}
           data={reelsData}
           extraData={extraData}
@@ -378,11 +397,14 @@ export default function ParticularReelComponent(route) {
           drawDistance={layoutHeight}
           snapToInterval={layoutHeight}
           snapToAlignment={'start'}
-          decelerationRate={'fast'}
+          decelerationRate={'normal'}
           scrollEventThrottle={250}
           disableIntervalMomentum={true}
-          initialNumToRender={1}
+          initialNumToRender={100}
           initialScrollIndex={currentReelIndex}
+          maxToRenderPerBatch={100}
+          windowSize={100}
+          removeClippedSubviews={false}
           getItemLayout={(data, index) => ({
             length: layoutHeight,
             offset: layoutHeight * index,
